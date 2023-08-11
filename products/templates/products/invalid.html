@@ -1,0 +1,122 @@
+{% extends 'products/index.html' %}
+
+<head>
+    {% block title %}
+    <title>invalid rows</title>
+    {% endblock %}
+</head>
+
+<body>
+    {% block header %}
+     <!-- ======= Header ======= -->
+        <header id="header" class="header fixed-top d-flex align-items-center">
+
+            <div class="d-flex align-items-center justify-content-between">
+            <a href="{% url 'admin' %}" class="logo d-flex align-items-center">
+                <img src="https://media.istockphoto.com/vectors/green-letter-n-icon-symbol-template-alphabet-icon-design-vector-id1138787740?k=6&m=1138787740&s=612x612&w=0&h=0NqouSd8SWBKl7aMLZHTSFcAcy3clR--WSDX2yWTVwk=" alt="">
+                <span class="d-none d-lg-block">NUGARY</span>
+            </a>
+            </div><!-- End Logo -->
+
+        </header><!-- End Header -->
+    {% endblock %}
+
+    {% block sidebar %}
+    {% endblock %}
+
+    {% block main %}
+    <main id="main" class="main">
+  
+      <section class="section dashboard">
+        <div class="row">
+  
+          <!-- Left side columns -->
+  
+                <!-- Recent Sales -->
+                <div class="col-lg-12"></div>
+                <div class="card recent-sales overflow-auto">
+  
+                  <div class="card-body">
+                    <h5 class="card-title">You may have duplicate rows</h5>
+                    <table class="table table-borderless datatable">
+                      <thead>
+                        <tr>
+                          <th scope="col">Brand</th>
+                          <th scope="col">Product</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for product in duplicate_rows %}
+                        <tr> 
+                          <td>{{ product.Brand }}</td>
+                          <td>{{ product.Name }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+  
+                  </div>
+  
+                </div>
+
+                <div class="card recent-sales overflow-auto">
+  
+                    <div class="card-body">
+                      <h5 class="card-title">You may have rows with empty cell(s) or invalid data type </h5>
+                      <table class="table table-borderless datatable">
+                        <thead>
+                          <tr>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Product</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for product in empty_rows %}
+                          <tr> 
+                            <td>{{ product.Brand }}</td>
+                            <td>{{ product.Name }}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+    
+                    </div>
+    
+                  </div>
+
+                  <div class="card recent-sales overflow-auto">
+  
+                    <div class="card-body">
+                      <h5 class="card-title">These products already exist</h5>
+                      <table class="table table-borderless datatable">
+                        <thead>
+                          <tr>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Product</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for product in existing_rows %}
+                          <tr> 
+                            <td>{{ product.Brand }}</td>
+                            <td>{{ product.Name }}</td>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+    
+                    </div>
+    
+                  </div>
+              </div><!-- End Recent Sales -->
+  
+              
+            
+  
+         
+        </div>
+      </section>
+  
+    </main><!-- End #main -->
+    {% endblock %}
+
+</body>

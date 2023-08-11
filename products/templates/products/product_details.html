@@ -1,0 +1,128 @@
+{% extends 'products/index.html' %}
+
+<head>
+    {% block title %}
+    <title>product details</title>
+    {% endblock %}
+</head>
+
+<body>
+    {% block header %}
+     <!-- ======= Header ======= -->
+        <header id="header" class="header fixed-top d-flex align-items-center">
+
+            <div class="d-flex align-items-center justify-content-between">
+            <a href="{% url 'admin' %}" class="logo d-flex align-items-center">
+                <img src="https://media.istockphoto.com/vectors/green-letter-n-icon-symbol-template-alphabet-icon-design-vector-id1138787740?k=6&m=1138787740&s=612x612&w=0&h=0NqouSd8SWBKl7aMLZHTSFcAcy3clR--WSDX2yWTVwk=" alt="">
+                <span class="d-none d-lg-block">NUGARY</span>
+            </a>
+            </div><!-- End Logo -->
+
+        </header><!-- End Header -->
+    {% endblock %}
+
+    {% block sidebar %}
+    {% endblock %}
+
+    {% block main %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Product Details</h1>
+          
+        </div><!-- End Page Title -->
+    
+        <section class="section profile">
+          <div class="row">
+            
+    
+            <div class="col-xl-6">
+    
+              <div class="card">
+                <div class="card-body pt-3">
+                 
+                      <!-- Profile Edit Form -->
+                      <form method="post" action="{% url 'edit_product' product.pk %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                          <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Product Image</label>
+                          <div class="col-md-8 col-lg-9">
+                            <img class="product-image" src="{{ product.img.url }}" alt="Product image">
+                            <div class="pt-2">
+                              <a href="#" onclick="showInfo1()"  class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                              <h6 id="img_info" style="display: inline; font-size: xx-small;">No file selected</h6>
+                              <div class="col-md-4 col-lg-5">
+                                <input name="image" type="file" style="display: none;" class="form-control" id="image" accept=".png, .jpg, .jpeg">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="name" class="col-md-4 col-lg-3 col-form-label">Product Name</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="name" type="text" class="form-control" id="name" value="{{ product.name }}" required>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="brand" class="col-md-4 col-lg-3 col-form-label">Brand</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="brand" type="text" class="form-control" id="brand" value="{{ product.brand }}" required>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="price" class="col-md-4 col-lg-3 col-form-label">Price</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-symbol">N</span>  
+                            <input name="price" type="number" class="form-control" id="price" value="{{ product.price }}" aria-describedby="basic-symbol" required>
+                            </div>  
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="unit_code" class="col-md-4 col-lg-3 col-form-label">Unit Code</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="unit_code" type="text" class="form-control" id="unit_code" value="{{ product.unit_code }}" required>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="category" class="col-md-4 col-lg-3 col-form-label">Category</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="category" type="text" class="form-control" id="category" value="{{ product.category }}" required>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="comment" class="col-md-4 col-lg-3 col-form-label">Comment</label>
+                          <div class="col-md-8 col-lg-9">
+                            <textarea name="comment" class="form-control" id="comment" style="height: 100px">{{ product.comment }}.</textarea>
+                          </div>
+                        </div>
+    
+                        
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                          <a href="javascript: {document.getElementById('delete').submit()}" class="btn btn-danger">Delete Product</a>
+                        </div>  
+                      </form><!-- End Profile Edit Form -->
+
+                      <form id="delete" method="post" action="{% url 'delete_product' product.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden"/>
+                      </form>
+                </div>
+              </div>
+    
+            </div>
+          </div>
+        </section>
+    
+    </main><!-- End #main -->
+    
+    {% endblock %}
+</body>

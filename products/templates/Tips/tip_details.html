@@ -1,0 +1,104 @@
+{% extends 'products/index.html' %}
+
+<head>
+    {% block title %}
+    <title>tip details</title>
+    {% endblock %}
+</head>
+
+<body>
+    {% block header %}
+     <!-- ======= Header ======= -->
+        <header id="header" class="header fixed-top d-flex align-items-center">
+
+            <div class="d-flex align-items-center justify-content-between">
+            <a href="{% url 'admin' %}" class="logo d-flex align-items-center">
+                <img src="https://media.istockphoto.com/vectors/green-letter-n-icon-symbol-template-alphabet-icon-design-vector-id1138787740?k=6&m=1138787740&s=612x612&w=0&h=0NqouSd8SWBKl7aMLZHTSFcAcy3clR--WSDX2yWTVwk=" alt="">
+                <span class="d-none d-lg-block">NUGARY</span>
+            </a>
+            </div><!-- End Logo -->
+
+        </header><!-- End Header -->
+    {% endblock %}
+
+    {% block sidebar %}
+    {% endblock %}
+
+    {% block main %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Tip Details</h1>
+          
+        </div><!-- End Page Title -->
+    
+        <section class="section profile">
+          <div class="row">
+            
+    
+            <div class="col-xl-6">
+    
+              <div class="card">
+                <div class="card-body pt-3">
+                 
+                      <!-- Profile Edit Form -->
+                      <form method="post" action="{% url 'edit_tip' tip.pk %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                          <label for="image" class="col-md-4 col-lg-3 col-form-label">Image</label>
+                          <div class="col-md-8 col-lg-9">
+                            <img class="product-image" src="{{ tip.img.url }}" alt="health tip image">
+                            <div class="pt-2">
+                              <a href="#" onclick="showInfo2()"  class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                              <h6 id="img_info" style="display: inline; font-size: xx-small;">No file selected</h6>
+                              <div class="col-md-4 col-lg-5">
+                                <input name="image" type="file" style="display: none;" class="form-control" id="image" accept=".png, .jpg, .jpeg">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="title" class="col-md-4 col-lg-3 col-form-label">Title</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="title" type="text" class="form-control" id="title" value="{{ tip.title }}" required>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="category" class="col-md-4 col-lg-3 col-form-label">Category</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="category" type="text" class="form-control" id="category" value="{{ tip.category }}" required>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="content" class="col-md-4 col-lg-3 col-form-label">Content</label>
+                          <div class="col-md-8 col-lg-9">
+                            <textarea name="content" class="form-control" id="content" style="height: 500px">{{ tip.content }}.</textarea>
+                          </div>
+                        </div>
+    
+                        
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                          <a href="javascript: {document.getElementById('delete').submit()}" class="btn btn-danger">Delete Tip</a>
+                        </div>  
+                      </form><!-- End Profile Edit Form -->
+
+                      <form id="delete" method="post" action="{% url 'delete_tip' tip.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden"/>
+                      </form>
+                </div>
+              </div>
+    
+            </div>
+          </div>
+        </section>
+    
+    </main><!-- End #main -->
+    
+    {% endblock %}
+</body>

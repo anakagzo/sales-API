@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  {% block title %}
+  <title>admin-dashboard</title>
+  {% endblock %}
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="https://media.istockphoto.com/vectors/green-letter-n-icon-symbol-template-alphabet-icon-design-vector-id1138787740?k=6&m=1138787740&s=612x612&w=0&h=0NqouSd8SWBKl7aMLZHTSFcAcy3clR--WSDX2yWTVwk=" rel="icon">
+  <link href="../../static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../../static/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="../../static/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="../../static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../../static/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../../static/css/style.css" rel="stylesheet">
+
+ 
+</head>
+
+<body>
+
+  {% block header %}
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'admin' %}" class="logo d-flex align-items-center">
+        <img src="https://media.istockphoto.com/vectors/green-letter-n-icon-symbol-template-alphabet-icon-design-vector-id1138787740?k=6&m=1138787740&s=612x612&w=0&h=0NqouSd8SWBKl7aMLZHTSFcAcy3clR--WSDX2yWTVwk=" alt="">
+        <span class="d-none d-lg-block">NUGARY</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        {% if alert %}
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#"  data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">{{ num }}</span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              Some products could not be added
+              <a href="{% url 'invalid_rows' %}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
+        {% endif %}
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+  {% endblock %}
+
+  <!-- ======= Sidebar ======= -->
+  {% block sidebar %}
+  <aside id="sidebar" class="sidebar">
+    
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'admin' %}">
+          <i class="bi bi-tv"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'add_product' %}">
+              <i class="bi bi-circle"></i><span>Add New Product</span>
+            </a>
+          </li>
+          <li>
+            <form id="import_excel" style="display: none;" method="post" action="{% url 'import_products' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="file" id="input_excel" name="excel_file" accept=".xls, .xlsx, .xlt" required>
+            </form>
+            <a href="#" onclick="showdialog()">
+              <i class="bi bi-circle"></i><span>Import Products</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'export_products' %}">
+              <i class="bi bi-circle"></i><span>Export Products</span>
+            </a>
+            {% if exported %}
+            <a  href= "{{ excel_url }}"  style="display: none;" id="download" ></a>    
+            {% endif %}
+          </li>
+          <li>
+            <a type="button" id="delAllProducts" href="{% url 'del_all_products' %}" style="display: none;" ></a>
+            <a  href="#"  onclick="showConfirmation1()">
+              <i class="bi bi-circle"></i><span>Delete All Products</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-stars"></i><span>Health Tips</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'show_tips' %}">
+              <i class="bi bi-circle"></i><span>Show All Tips</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'add_tips' %}">
+              <i class="bi bi-circle"></i><span>Create New Tip</span>
+            </a>
+          </li>
+          <li>
+            <a type="button" id="delAllTips" href="{% url 'del_all_tips' %}" style="display: none;" ></a>
+            <a  href="#"  onclick="showConfirmation2()">  
+              <i class="bi bi-circle"></i><span>Delete All Tips</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Account Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'change_username' %}">
+              <i class="bi bi-circle"></i><span>Change Username</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'change_password' %}">
+              <i class="bi bi-circle"></i><span>Change Password</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link " data-bs-target="#tables-nav" href="javascript: {document.getElementById('logout').submit()}">
+          <i class="bi bi-arrow-bar-right"></i><span>Log Out</span>
+        </a>
+        <form id="logout" method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <input type="hidden"/>
+        </form>
+      </li><!-- End Tables Nav -->
+     
+     
+    </ul>
+
+  </aside><!-- End Sidebar-->
+  {% endblock %}
+
+  {% block main %}
+  <main id="main" class="main">
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+       
+              <!-- info card -->
+              <div class="col-lg-6">
+                {% if msg %}
+                <div class="card info overflow-auto " id="infoCard">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ msg }}</h5>
+                  </div>
+                </div>
+                {% endif %}
+              </div> 
+
+              <!-- Recent Sales -->
+              <div class="col-lg-12"></div>
+              <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                  <h5 class="card-title">product List</h5>
+
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        
+                        <th scope="col">Brand</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price (N)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for product in products.all %}
+                      <tr>
+                        
+                        <td>{{ product.brand }}</td>
+                        <td><a href="{% url 'product_details' product.pk %}" class="text-title">{{ product.name }}</a></td>
+                        <td>{{ product.price }}</td>
+                        
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+            
+          
+
+       
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+  {% endblock %}
+
+  <!-- ======= Footer ======= -->
+  {% block footer %}
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright.<span>NiceAdmin</span> All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+  {% endblock %}
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../../static/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../static/vendor/chart.js/chart.umd.js"></script>
+  <script src="../../static/vendor/echarts/echarts.min.js"></script>
+  <script src="../../static/vendor/quill/quill.min.js"></script>
+  <script src="../../static/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="../../static/vendor/tinymce/tinymce.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../../static/js/main.js"></script>
+  <script src="../../static/js/main2.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+{% extends 'products/index.html' %}
+
+<head>
+    {% block title %}
+    <title>add product</title>
+    {% endblock %}
+</head>
+
+<body>
+    {% block header %}
+     <!-- ======= Header ======= -->
+        <header id="header" class="header fixed-top d-flex align-items-center">
+
+            <div class="d-flex align-items-center justify-content-between">
+            <a href="{% url 'admin' %}" class="logo d-flex align-items-center">
+                <img src="https://media.istockphoto.com/vectors/green-letter-n-icon-symbol-template-alphabet-icon-design-vector-id1138787740?k=6&m=1138787740&s=612x612&w=0&h=0NqouSd8SWBKl7aMLZHTSFcAcy3clR--WSDX2yWTVwk=" alt="">
+                <span class="d-none d-lg-block">NUGARY</span>
+            </a>
+            </div><!-- End Logo -->
+
+        </header><!-- End Header -->
+    {% endblock %}
+
+    {% block sidebar %}
+    {% endblock %}
+
+    {% block main %}
+    <main id="main" class="main">
+
+        <section class="section profile">
+          <div class="row">
+
+            <!-- info card -->
+            <div class="col-xl-5">
+              {% if msg %}
+              <div class="card info overflow-auto" id="infoCard">
+                <div class="card-body">
+                  <h5 class="card-title">{{ msg }} </h5>
+                </div>
+              </div>
+              {% endif %}
+            </div> 
+    
+            <!-- Left side columns -->
+            <div class="col-xl-8">
+             
+                  <div class="card">
+    
+                    <div class="card-body">
+                      <h5 class="card-title">New Product</h5>
+    
+                      <form method="post" action="{% url 'add_product' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                          <label for="image" class="col-md-4 col-lg-3 col-form-label">Product image</label>
+                          <div class="col-md-4 col-lg-5">
+                            <input name="image" type="file" class="form-control" id="image" accept=".png, .jpg, .jpeg" required>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="name" class="col-md-4 col-lg-3 col-form-label">Product Name</label>
+                          <div class="col-md-6 col-lg-7">
+                            <input name="name" type="text" class="form-control" id="name" required>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="brand" class="col-md-4 col-lg-3 col-form-label">Brand</label>
+                          <div class="col-md-4 col-lg-5">
+                            <input name="brand" type="text" class="form-control" id="brand" required>
+                          </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                          <label for="price" class="col-md-4 col-lg-3 col-form-label">Price</label>
+                          <div class="col-md-1 col-lg-3">
+                            <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-symbol">N</span>
+                            <input name="price" type="number" class="form-control" id="price" aria-describedby="basic-symbol" required>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="category" class="col-md-4 col-lg-3 col-form-label">Category</label>
+                          <div class="col-md-1 col-lg-3">
+                            <input name="category" type="text" class="form-control" id="category" aria-describedby="basic-symbol" required>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="unit_code" class="col-md-4 col-lg-3 col-form-label">Unit Code</label>
+                          <div class="col-md-1 col-lg-3">
+                            <input name="unit_code" type="text" class="form-control" id="unit_code" aria-describedby="basic-symbol" required>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="comment" class="col-md-4 col-lg-3 col-form-label">Comment</label>
+                          <div class="col-md-6 col-lg-7">
+                            <textarea name="comment" class="form-control" id="comment" style="height: 100px"></textarea>
+                          </div>
+                        </div>
+    
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-success">Add Product</button>
+                        </div>
+                      </form><!-- End Change Password Form -->
+                    
+                    </div>
+    
+                  </div>
+                
+    
+                
+              
+            </div><!-- End Left side columns -->
+    
+           
+          </div>
+        </section>
+    
+      </main><!-- End #main -->
+    {% endblock %}
+</body>
