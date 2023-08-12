@@ -1,11 +1,11 @@
-myvenv/
+myenv/
 .pytest_cache
 **__pycache__/
-db.sqlite3
+**.db
 .env
 .coverage
 .vscode
 schema.yml
 htmlcov
 README.md
-*.ini
+**secret.py

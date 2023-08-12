@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
 
 
 # Create your models here.
@@ -27,11 +26,5 @@ class HealthTip(models.Model):
     def __str__(self):
         return self.title
     
-
-class CustomUser(AbstractBaseUser):
-    pass
-
-    def __str__(self):
-        return self.password
 
     
