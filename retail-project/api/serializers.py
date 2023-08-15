@@ -1,4 +1,4 @@
-from products.models import Product, HealthTip
+from products.models import Product, HealthTip, ProductCategory, HealthTipCategory
 from rest_framework import serializers
 
 
@@ -16,4 +16,21 @@ class HealthTipSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthTip
         fields = ('__all__')
+
+
+class ProductCategorySerializer(serializers.ModelSerializer):
+     # create serializer class for ProductCategory model
+
+    class Meta:
+        model = ProductCategory
+        fields = ('__all__')
+
+
+class HealthTipCategorySerializer(serializers.ModelSerializer):
+    # create serializer class for HealthTipCategory model
+
+    class Meta:
+        model = HealthTipCategory
+        fields = ('__all__')
+
 

@@ -16,6 +16,14 @@ class Product(models.Model):
         return self.name
     
 
+class ProductCategory(models.Model):
+
+    name = models.CharField(max_length=40, unique=True, default='general')
+
+    def __str__(self):
+        return self.name
+    
+
 class HealthTip(models.Model):
 
     img = models.ImageField(upload_to='images/', default='images/IMG_1828_2.jpeg')
@@ -26,5 +34,12 @@ class HealthTip(models.Model):
     def __str__(self):
         return self.title
     
+
+class HealthTipCategory(models.Model):
+
+    name = models.CharField(max_length=40, unique=True, default='general')
+
+    def __str__(self):
+        return self.name   
 
     

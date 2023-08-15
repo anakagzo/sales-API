@@ -1,8 +1,8 @@
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework import views, status
 from rest_framework.response import Response
-from products.models import Product, HealthTip
-from .serializers import ProductSerializer, HealthTipSerializer
+from products.models import Product, HealthTip, ProductCategory, HealthTipCategory
+from .serializers import ProductSerializer, HealthTipSerializer, ProductCategorySerializer, HealthTipCategorySerializer
 from random import randint
 import retail.secret as secret
 
@@ -40,7 +40,7 @@ class ProductList(views.APIView):
                 name = request.GET['name']
                 if Product.objects.filter(name__iexact=name, brand__iexact=brand).exists():
                     product = Product.objects.filter(name__iexact=name, brand__iexact=brand)
-                    serializer = ProductSerializer(product)
+                    serializer = ProductSerializer(product, many=True)
                     return Response(serializer.data) 
                 else:
                     return Response(status=status.HTTP_404_NOT_FOUND)
@@ -81,7 +81,23 @@ class ProductList(views.APIView):
         else:
             # the token means the user doesnt have permission to view the database
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-    
+
+
+class ProductCategoryList(views.APIView):
+   
+    def get(self, request, format=None):
+        # get the list of all product categories from the database
+
+        token = secret.APIKEY
+        if 'token' in request.GET and request.GET['token'] == token:
+            # ensure the user has permission to access the database
+            categorylist = ProductCategory.objects.all()
+            serializer = ProductCategorySerializer(categorylist, many=True)
+            return Response(serializer.data)
+        else:
+           # the token means the user doesnt have permission to view the database
+            return Response(status=status.HTTP_401_UNAUTHORIZED)     
+
 
 class HealthTipList(views.APIView):
 
@@ -143,6 +159,21 @@ class HealthTipList(views.APIView):
             # the token means the user doesnt have permission to view the database
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+
+class HealthTipCategoryList(views.APIView):
+   
+    def get(self, request, format=None):
+        # get the list of all health tip categories from the database
+
+        token = secret.APIKEY
+        if 'token' in request.GET and request.GET['token'] == token:
+            # ensure the user has permission to access the database
+            categorylist = HealthTipCategory.objects.all()
+            serializer = HealthTipCategorySerializer(categorylist, many=True)
+            return Response(serializer.data)
+        else:
+           # the token means the user doesnt have permission to view the database
+            return Response(status=status.HTTP_401_UNAUTHORIZED)     
 
 
         

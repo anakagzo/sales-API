@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
-from .models import Product, HealthTip
+from .models import Product, HealthTip, ProductCategory, HealthTipCategory
 from .serializers import ProductSerializer
 import json
 import magic
@@ -70,6 +70,14 @@ def add_product(request):
                     new_product.unit_code = request.POST['unit_code']
                     new_product.comment = request.POST['comment']
                     new_product.save()
+                    
+                    # save the category if its a new category
+                    if ProductCategory.objects.filter(name__iexact=request.POST['category']).exists():
+                        pass
+                    else:
+                        category = ProductCategory()
+                        category.name = request.POST['category']
+                        category.save()
                     return render(request, 'products/new_product.html',
                                 {'msg': 'product added successfully!.'})       
         except ValidationError:
@@ -85,6 +93,7 @@ def del_all_products(request):
 
     if Product.objects.exists():
         Product.objects.all().delete()
+        ProductCategory.objects.all().delete()
         return render(request, 'products/index.html',
                       {'msg': 'All products deleted successfully.'})
     else:
@@ -206,6 +215,14 @@ def import_products(request):
 
                         product.save()
                         no_of_saved_products += 1
+
+                        # save the category if its a new category
+                        if ProductCategory.objects.filter(name__iexact=str(row.Category)).exists():
+                            pass
+                        else:
+                            category = ProductCategory()
+                            category.name = request.POST['category']
+                            category.save()
                         
                     #print('true')
                     except ValueError:
@@ -333,6 +350,13 @@ def edit_product(request, pk):
                 product.comment = request.POST['comment']
 
                 product.save()
+                # save the category if its a new category
+                if ProductCategory.objects.filter(name__iexact=request.POST['category']).exists():
+                    pass
+                else:
+                    category = ProductCategory()
+                    category.name = request.POST['category']
+                    category.save()
                 products = retrieve_products()
                 return render(request, 'products/index.html',
                             {'msg': 'Product edited successfully!',
@@ -347,6 +371,13 @@ def edit_product(request, pk):
                 product.comment = request.POST['comment']
 
                 product.save()
+                # save the category if its a new category
+                if ProductCategory.objects.filter(name__iexact=request.POST['category']).exists():
+                    pass
+                else:
+                    category = ProductCategory()
+                    category.name = request.POST['category']
+                    category.save()
                 products = retrieve_products()
                 return render(request, 'products/index.html',
                             {'msg': 'Product edited successfully!',
@@ -412,6 +443,13 @@ def add_tips(request):
                     new_tip.category = request.POST['category']
                     new_tip.content = request.POST['content']
                     new_tip.save()
+                    # save the category if its a new category
+                    if HealthTipCategory.objects.filter(name__iexact=request.POST['category']).exists():
+                        pass
+                    else:
+                        category = HealthTipCategory()
+                        category.name = request.POST['category']
+                        category.save()
                     return render(request, 'Tips/new_tip.html',
                                 {'msg': 'Health tip added successfully!.'})   
                     
@@ -456,6 +494,7 @@ def del_all_tips(request):
 
     if HealthTip.objects.exists():
         HealthTip.objects.all().delete()
+        HealthTipCategory.objects.all().delete()
         return render(request, 'Tips/show_tips.html',
                       {'msg': 'All Health Tips deleted successfully.'})
     else:
@@ -486,6 +525,13 @@ def edit_tip(request, pk):
                 tip.content = request.POST['content']
 
                 tip.save()
+                # save the category if its a new category
+                if HealthTipCategory.objects.filter(name__iexact=request.POST['category']).exists():
+                    pass
+                else:
+                    category = HealthTipCategory()
+                    category.name = request.POST['category']
+                    category.save()
                 tips = HealthTip.objects.all()
                 return render(request, 'Tips/show_tips.html',
                             {'msg': 'Health tip edited successfully!',
@@ -497,6 +543,13 @@ def edit_tip(request, pk):
                 tip.content = request.POST['content']
 
                 tip.save()
+                # save the category if its a new category
+                if HealthTipCategory.objects.filter(name__iexact=request.POST['category']).exists():
+                    pass
+                else:
+                    category = HealthTipCategory()
+                    category.name = request.POST['category']
+                    category.save()
                 tips = HealthTip.objects.all()
                 return render(request, 'Tips/show_tips.html',
                             {'msg': 'Health tip edited successfully!',
