@@ -756,6 +756,18 @@ h6 {
 /*--------------------------------------------------------------
 # Login
 --------------------------------------------------------------*/
+#login-header{
+  flex-basis: 100%;
+}
+
+
+#header .items{
+  font-size: 14px;
+  color: #178f25;
+  padding-right: 2rem;
+}
+
+
 /* Info Cards */
 .register .info {
   margin-bottom: 10px;
@@ -773,6 +785,8 @@ h6 {
   color: #ed3c0d;
   text-align: center;
 }
+
+
 
 
 

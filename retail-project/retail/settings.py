@@ -121,8 +121,12 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# close the session after 3600 seconds on inactivity
+SESSION_COOKIE_AGE = 3600
 # log user out after closing the browser
-#SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # security settings
 

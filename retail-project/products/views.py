@@ -357,6 +357,14 @@ def edit_product(request, pk):
                     category = ProductCategory()
                     category.name = request.POST['category']
                     category.save()
+                # check if the previous product category still exists in the products database
+                # if not delete the product category
+                if Product.objects.filter(category__iexact=request.POST['old_category']).exists():
+                    pass
+                else:
+                    category = ProductCategory.objects.filter(name__iexact=request.POST['old_category'])
+                    category.delete()
+ 
                 products = retrieve_products()
                 return render(request, 'products/index.html',
                             {'msg': 'Product edited successfully!',
@@ -378,6 +386,13 @@ def edit_product(request, pk):
                     category = ProductCategory()
                     category.name = request.POST['category']
                     category.save()
+                # check if the previous product category still exists in the products database
+                # if not delete the product category
+                if Product.objects.filter(category__iexact=request.POST['old_category']).exists():
+                    pass
+                else:
+                    category = ProductCategory.objects.filter(name__iexact=request.POST['old_category'])
+                    category.delete()    
                 products = retrieve_products()
                 return render(request, 'products/index.html',
                             {'msg': 'Product edited successfully!',
@@ -400,7 +415,16 @@ def delete_product(request, pk):
         product = Product.objects.get(pk=pk)
         name = product.name
         brand = product.brand
+        category = product.category
         product.delete() 
+
+        # check if the previous product category still exists in the products database
+        # if not delete the product category
+        if Product.objects.filter(category__iexact=category).exists():
+            pass
+        else:
+            category = ProductCategory.objects.filter(name__iexact=category)
+            category.delete()
 
         products = retrieve_products()
         return render(request, 'products/index.html',
@@ -532,6 +556,15 @@ def edit_tip(request, pk):
                     category = HealthTipCategory()
                     category.name = request.POST['category']
                     category.save()
+
+                # check if the previous health tip category still exists in the Health tip database
+                # if not delete the Health tip category
+                if HealthTip.objects.filter(category__iexact=request.POST['old_category']).exists():
+                    pass
+                else:
+                    category = HealthTipCategory.objects.filter(name__iexact=request.POST['old_category'])
+                    category.delete()    
+                    
                 tips = HealthTip.objects.all()
                 return render(request, 'Tips/show_tips.html',
                             {'msg': 'Health tip edited successfully!',
@@ -550,6 +583,14 @@ def edit_tip(request, pk):
                     category = HealthTipCategory()
                     category.name = request.POST['category']
                     category.save()
+
+                # check if the previous health tip category still exists in the Health tip database
+                # if not delete the Health tip category
+                if HealthTip.objects.filter(category__iexact=request.POST['old_category']).exists():
+                    pass
+                else:
+                    category = HealthTipCategory.objects.filter(name__iexact=request.POST['old_category'])
+                    category.delete()      
                 tips = HealthTip.objects.all()
                 return render(request, 'Tips/show_tips.html',
                             {'msg': 'Health tip edited successfully!',
@@ -570,11 +611,21 @@ def delete_tip(request, pk):
 
     if request.method == 'POST':
         tip = HealthTip.objects.get(pk=pk)
+        category = tip.category
         tip.delete() 
+
+        # check if the previous health tip category still exists in the Health tip database
+        # if not delete the Health tip category
+        if HealthTip.objects.filter(category__iexact=category).exists():
+            pass
+        else:
+            category = HealthTipCategory.objects.filter(name__iexact=category)
+            category.delete()  
 
         tips = HealthTip.objects.all()
         return render(request, 'Tips/show_tips.html',
                       {'msg': 'Health tip deleted successfully!.',
+                       
                        'tips': tips})
     else:
         return redirect('show_all_tips')

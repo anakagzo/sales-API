@@ -96,10 +96,17 @@
                           </div>
                         </div>
 
+                        <div class="row mb-3" style="display: none;">
+                          <label for="old_category" class="col-md-4 col-lg-3 col-form-label">Old Category</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="old_category" type="text" class="form-control" id="old_category" value="{{ product.category }}" required>
+                          </div>
+                        </div>
+
                         <div class="row mb-3">
                           <label for="comment" class="col-md-4 col-lg-3 col-form-label">Comment</label>
                           <div class="col-md-8 col-lg-9">
-                            <textarea name="comment" class="form-control" id="comment" style="height: 100px">{{ product.comment }}.</textarea>
+                            <textarea name="comment" class="form-control" id="comment" style="height: 50px">{{ product.comment }}.</textarea>
                           </div>
                         </div>
     
