@@ -29,6 +29,9 @@ def retrieve_products():
 @login_required(login_url='/product/user/login')
 def view_admin(request):
     # display the products in the database on a homepage
+
+    
+    #print('ok')    
     
     if Product.objects.exists():
         products = retrieve_products()
@@ -46,10 +49,10 @@ def add_product(request):
     if request.method == 'POST':
         try:
             # ensure the selected file is image format
-            allowed_formats = ['image/png', 'image/jpeg', 'image/jpg']
-            image_file = request.FILES['image']
-            file_type = magic.from_buffer(image_file.read(), mime=True)
-            if file_type not in allowed_formats:
+            allowed_formats = ('.png', '.jpeg', '.jpg', '.PNG', '.JPG', '.JPEG')
+            image_file = str(request.FILES['image'])
+            # file_type = magic.from_buffer(image_file.read(), mime=True)
+            if not image_file.endswith(allowed_formats):
                 return render(request, 'products/new_product.html',
                             {'msg': 'File must be image format.'})
             else:
@@ -145,7 +148,10 @@ def clean_database(table):
         elif str(item).strip().upper() == 'PRICE':
             table.rename(columns={item: 'Price'}, inplace=True)
             # convert every non numeric value in price column to NaN
-            table.loc[table['Price'].str.isnumeric() == False,['Price']] = np.nan              
+            if table['Price'].dtype == 'object':
+                table.loc[table['Price'].str.isnumeric() == False, ['Price']] = np.nan
+            elif table['Price'].dtype == 'float64':
+                pass                 
         else:
             pass
 
@@ -209,7 +215,7 @@ def import_products(request):
                         product = Product()
                         product.name = str(row.Name)
                         product.brand = str(row.Brand)
-                        product.price = str(row.Price)
+                        product.price = int(row.Price)
                         product.unit_code = str(row.Unit_code)
                         product.category = str(row.Category)
 
@@ -221,12 +227,12 @@ def import_products(request):
                             pass
                         else:
                             category = ProductCategory()
-                            category.name = request.POST['category']
+                            category.name = product.category
                             category.save()
                         
                     #print('true')
                     except ValueError:
-                         return render(request, 'products/index.html',
+                        return render(request, 'products/index.html',
                         {'msg': f'Invalid entry{str(row.Name)},{str(row.Brand)}.'})
 
             #convert the dataframes to dictionary so it can be stored in the session
@@ -246,9 +252,9 @@ def import_products(request):
 
          # display a success message
         if len(invalid_rows) != 0 or len(duplicate_rows) != 0 or len(already_existing_rows) != 0:
-            print(len(invalid_rows))
-            print(len(duplicate_rows))
-            print(len(already_existing_rows))
+            #(len(invalid_rows))
+            #print(len(duplicate_rows))
+            #print(len(already_existing_rows))
             no_of_invalidrows = len(invalid_rows) + len(duplicate_rows) + len(already_existing_rows)
             products = retrieve_products()
             return render(request, 'products/index.html',
@@ -447,10 +453,10 @@ def add_tips(request):
     if request.method == 'POST':
         try:
             # ensure the selected file is image format
-            allowed_formats = ['image/png', 'image/jpeg', 'image/jpg']
-            image_file = request.FILES['image']
-            file_type = magic.from_buffer(image_file.read(), mime=True)
-            if file_type not in allowed_formats:
+            allowed_formats = ('.png', '.jpeg', '.jpg', '.PNG', '.JPG', '.JPEG')
+            image_file = str(request.FILES['image'])
+            #file_type = magic.from_buffer(image_file.read(), mime=True)
+            if not image_file.endswith(allowed_formats):
                 return render(request, 'Tips/new_tip.html',
                             {'msg': 'File must be image format.'})
             else:

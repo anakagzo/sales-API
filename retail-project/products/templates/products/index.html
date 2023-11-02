@@ -195,6 +195,7 @@
         <a class="nav-link " data-bs-target="#tables-nav" href="javascript: {document.getElementById('logout').submit()}">
           <i class="bi bi-arrow-bar-right"></i><span>Log Out</span>
         </a>
+        
         <form id="logout" method="post" action="{% url 'logout' %}">
           {% csrf_token %}
           <input type="hidden"/>

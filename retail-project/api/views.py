@@ -19,12 +19,14 @@ class ProductList(views.APIView):
             if 'cat' in request.GET:
                 # check if category was passed
                 category = request.GET['cat']
+                # convert all '#n6' encode into &
+                category = str(category).replace('-n6', '&')
                 if Product.objects.filter(category__iexact=category).exists():
                     products = Product.objects.filter(category__iexact=category)
                     if products.count() > 100:
                         # derive a mathematical function to select 100 products at random
                         # when the returned products are more than 100
-                        limit = products.count() - 99
+                        limit = products.count() - 100
                         random_num = randint(0, limit)
                         random_products = products[random_num:random_num+100]
                         serializer = ProductSerializer(random_products, many=True)
@@ -38,6 +40,9 @@ class ProductList(views.APIView):
                 # check if brand and name was passed
                 brand = request.GET['brand']
                 name = request.GET['name']
+                # convert all '#n6' encode into '&'
+                name = str(name).replace('-n6', '&')
+                brand = str(brand).replace('-n6', '&')
                 if Product.objects.filter(name__iexact=name, brand__iexact=brand).exists():
                     product = Product.objects.filter(name__iexact=name, brand__iexact=brand)
                     serializer = ProductSerializer(product, many=True)
@@ -70,9 +75,9 @@ class ProductList(views.APIView):
                 #  else randomly select 16 products
                 products = Product.objects.all()
                 if products.count() > 16:  
-                    limit = products.count() - 15
+                    limit = products.count() - 16
                     random_num = randint(0, limit)
-                    random_products = products[limit: limit+16] 
+                    random_products = products[random_num: random_num+16] 
                     serializer = ProductSerializer(random_products, many=True)
                     return Response(serializer.data)
                 else:
@@ -91,7 +96,7 @@ class ProductCategoryList(views.APIView):
         token = secret.APIKEY
         if 'token' in request.GET and request.GET['token'] == token:
             # ensure the user has permission to access the database
-            categorylist = ProductCategory.objects.all()
+            categorylist = ProductCategory.objects.all().order_by('name').values()
             serializer = ProductCategorySerializer(categorylist, many=True)
             return Response(serializer.data)
         else:
@@ -168,7 +173,7 @@ class HealthTipCategoryList(views.APIView):
         token = secret.APIKEY
         if 'token' in request.GET and request.GET['token'] == token:
             # ensure the user has permission to access the database
-            categorylist = HealthTipCategory.objects.all()
+            categorylist = HealthTipCategory.objects.all().order_by('name').values()
             serializer = HealthTipCategorySerializer(categorylist, many=True)
             return Response(serializer.data)
         else:
